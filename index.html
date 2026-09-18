@@ -321,6 +321,15 @@ body{
           </label>
           <span id="afLoopStatus">ループ OFF</span>
         </div>
+        <div class="savepresetrow">
+          <input type="text" id="afPresetName" placeholder="名前を付けて保存" maxlength="40">
+          <button class="btn small" id="afSavePreset">保存</button>
+        </div>
+      </div>
+
+      <div class="block">
+        <h2>保存済み</h2>
+        <div class="list" id="afPresetList"><div class="empty-list">なし</div></div>
       </div>
 
       <div class="block">
@@ -341,19 +350,29 @@ body{
       <div class="block">
         <h2>キー（ピッチ）</h2>
         <div class="keygrid" id="afKeyGrid">
-          <button class="keybtn" data-semi="-12">-12</button>
-          <button class="keybtn" data-semi="-7">-7</button>
+          <button class="keybtn" data-semi="-5">-5</button>
+          <button class="keybtn" data-semi="-4">-4</button>
+          <button class="keybtn" data-semi="-3">-3</button>
           <button class="keybtn" data-semi="-2">-2</button>
+          <button class="keybtn" data-semi="-1">-1</button>
           <button class="keybtn active" data-semi="0">0</button>
+          <button class="keybtn" data-semi="1">+1</button>
           <button class="keybtn" data-semi="2">+2</button>
-          <button class="keybtn" data-semi="7">+7</button>
-          <button class="keybtn" data-semi="12">+12</button>
+          <button class="keybtn" data-semi="3">+3</button>
+          <button class="keybtn" data-semi="4">+4</button>
+          <button class="keybtn" data-semi="5">+5</button>
         </div>
         <div class="customrow">
           <input type="range" id="afCustomKey" min="-12" max="12" step="1" value="0">
           <div class="val" id="afCustomKeyVal">0</div>
         </div>
-        <div class="hint">速度とは独立して半音単位でキーを変更できます（±12 = 1オクターブ）。</div>
+        <div class="hint">速度とは独立して半音単位でキー(カポ位置)を変更できます。±5まではボタン、それ以上（最大±12 = 1オクターブ）はスライダーで調整してください。</div>
+      </div>
+
+      <div class="block">
+        <h2>履歴</h2>
+        <div class="list" id="afHistoryList"><div class="empty-list">なし</div></div>
+        <div class="hint">同じファイルをもう一度選択/ドロップすると、前回の速度・キー・保存済みループを自動的に復元します。</div>
       </div>
     </div>
   </aside>
@@ -895,10 +914,29 @@ let afStartSec = 0, afEndSec = 0;
 let afSpeed = 1;
 let afSemitones = 0;
 let afDragging = false;
+let currentAfKey = null;
 
 function ensureAudioCtx(){
   if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   return audioCtx;
+}
+
+/* ---------- 音声ファイル：履歴・プリセットの保存 ---------- */
+const AF_STORE_KEY = 'earcopy_audio_v1';
+function loadAfStore(){
+  try{ return JSON.parse(localStorage.getItem(AF_STORE_KEY)) || {}; }catch(e){ return {}; }
+}
+function saveAfStore(store){ localStorage.setItem(AF_STORE_KEY, JSON.stringify(store)); }
+function afFileKey(file){ return file.name + '_' + file.size; }
+function getAfEntry(key, name){
+  const store = loadAfStore();
+  if(!store[key]) store[key] = { key, name, addedAt: Date.now(), presets: [], lastSpeed: 1, lastSemitones: 0 };
+  return store[key];
+}
+function upsertAfEntry(entry){
+  const store = loadAfStore();
+  store[entry.key] = entry;
+  saveAfStore(store);
 }
 
 async function loadAudioFile(file){
@@ -914,17 +952,27 @@ async function loadAudioFile(file){
     const arrayBuf = await file.arrayBuffer();
     const audioBuffer = await ctx.decodeAudioData(arrayBuf);
 
+    const key = afFileKey(file);
+    currentAfKey = key;
+    const entry = getAfEntry(key, file.name);
+    entry.name = file.name;
+    entry.addedAt = Date.now();
+    upsertAfEntry(entry);
+
     if(shifter){ try{ shifter.off(); shifter.disconnect(); }catch(e){} }
     shifter = new window.PitchShifter(ctx, audioBuffer, 4096, () => {
       // ソースの終端でフレームが尽きたときに確実に呼ばれるコールバック
+      if(afLoopOn && afEndSec > afStartSec){
+        // ループ中に終端へ到達した場合は絶対的な先頭(0秒)へ戻さず、ループ開始点(A)へ戻して再生を続ける
+        shifter.percentagePlayed = afStartSec / afDuration;
+        return;
+      }
       pauseAudioFile();
       shifter.percentagePlayed = 0;
       afSeekRange.value = 0;
       afSeekFill.style.width = '0%';
       afCurTime.textContent = '0:00';
     });
-    shifter.tempo = afSpeed;
-    shifter.pitchSemitones = afSemitones;
 
     gainNode = ctx.createGain();
     gainNode.connect(ctx.destination);
@@ -943,6 +991,10 @@ async function loadAudioFile(file){
     afFilename.style.display = 'block';
     afMsg.textContent = '';
     updateAfLoopUI();
+    setAfSpeed(entry.lastSpeed || 1);
+    setAfSemitones(entry.lastSemitones || 0);
+    renderAfPresets();
+    renderAfHistory();
 
     shifter.on('play', detail => {
       if(afDragging) return;
@@ -1067,6 +1119,91 @@ afLoopToggle.addEventListener('change', ()=>{
   updateAfLoopUI();
 });
 
+/* ---------- 音声ファイル：プリセット ---------- */
+$('#afSavePreset').addEventListener('click', ()=>{
+  if(!currentAfKey){ afMsg.textContent = '先に音声ファイルを読み込んでください'; return; }
+  if(afEndSec<=afStartSec){ afMsg.textContent = 'A/Bのループ範囲を先に設定してください'; return; }
+  const nameInput = $('#afPresetName');
+  const name = nameInput.value.trim() || ('ループ '+fmtTime(afStartSec)+'〜'+fmtTime(afEndSec));
+  const entry = getAfEntry(currentAfKey, '');
+  entry.presets.push({ id: Date.now().toString(36), name, start: afStartSec, end: afEndSec, semitones: afSemitones, createdAt: Date.now() });
+  upsertAfEntry(entry);
+  nameInput.value = '';
+  afMsg.textContent = '';
+  renderAfPresets();
+  renderAfHistory();
+});
+
+function renderAfPresets(){
+  const listEl = $('#afPresetList');
+  if(!currentAfKey){ listEl.innerHTML = '<div class="empty-list">なし</div>'; return; }
+  const entry = getAfEntry(currentAfKey, '');
+  if(!entry.presets.length){ listEl.innerHTML = '<div class="empty-list">なし</div>'; return; }
+  listEl.innerHTML = '';
+  entry.presets.slice().reverse().forEach(p=>{
+    const div = document.createElement('div');
+    div.className = 'item';
+    const semi = p.semitones || 0;
+    const semiTag = semi > 0 ? ('+'+semi) : String(semi);
+    div.innerHTML = `
+      <div class="info">
+        <div class="name">${escapeHtml(p.name)}</div>
+        <div class="meta">${fmtTime(p.start)} → ${fmtTime(p.end)} ・ Key ${semiTag}</div>
+      </div>
+      <div class="acts">
+        <button title="呼び出す" data-act="load">▶</button>
+        <button title="削除" data-act="del">✕</button>
+      </div>`;
+    div.querySelector('[data-act="load"]').addEventListener('click', ()=>{
+      afStartSec = p.start; afEndSec = p.end;
+      afStartInput.value = fmtTime(afStartSec);
+      afEndInput.value = fmtTime(afEndSec);
+      afLoopOn = true; afLoopToggle.checked = true;
+      updateAfLoopUI();
+      setAfSemitones(p.semitones || 0);
+      if(shifter && afDuration) shifter.percentagePlayed = afStartSec / afDuration;
+    });
+    div.querySelector('[data-act="del"]').addEventListener('click', ()=>{
+      const e2 = getAfEntry(currentAfKey, '');
+      e2.presets = e2.presets.filter(x=>x.id!==p.id);
+      upsertAfEntry(e2);
+      renderAfPresets();
+      renderAfHistory();
+    });
+    listEl.appendChild(div);
+  });
+}
+
+/* ---------- 音声ファイル：履歴 ---------- */
+function renderAfHistory(){
+  const listEl = $('#afHistoryList');
+  const store = loadAfStore();
+  const keys = Object.keys(store).sort((a,b)=> store[b].addedAt - store[a].addedAt).slice(0,12);
+  if(!keys.length){ listEl.innerHTML = '<div class="empty-list">なし</div>'; return; }
+  listEl.innerHTML = '';
+  keys.forEach(key=>{
+    const e = store[key];
+    const div = document.createElement('div');
+    div.className = 'item';
+    div.innerHTML = `
+      <div class="info">
+        <div class="name">${key === currentAfKey ? '● ' : ''}${escapeHtml(e.name)}</div>
+        <div class="meta">${e.presets.length}件</div>
+      </div>
+      <div class="acts">
+        <button title="削除" data-act="del">✕</button>
+      </div>`;
+    div.querySelector('[data-act="del"]').addEventListener('click', ()=>{
+      const s = loadAfStore();
+      delete s[key];
+      saveAfStore(s);
+      renderAfHistory();
+    });
+    listEl.appendChild(div);
+  });
+}
+renderAfHistory();
+
 /* ---------- 音声ファイル：速度 ---------- */
 function updateAfRateBadge(){
   const semi = afSemitones > 0 ? ('+'+afSemitones) : String(afSemitones);
@@ -1081,6 +1218,11 @@ function setAfSpeed(rate){
   afCustomRate.value = afSpeed;
   afCustomRateVal.textContent = afSpeed.toFixed(2)+'x';
   updateAfRateBadge();
+  if(currentAfKey){
+    const entry = getAfEntry(currentAfKey, '');
+    entry.lastSpeed = afSpeed;
+    upsertAfEntry(entry);
+  }
 }
 document.querySelectorAll('#afSpeedGrid .speedbtn').forEach(b=>{
   b.addEventListener('click', ()=> setAfSpeed(parseFloat(b.dataset.rate)));
@@ -1098,6 +1240,11 @@ function setAfSemitones(semi){
   afCustomKey.value = afSemitones;
   afCustomKeyVal.textContent = afSemitones > 0 ? ('+'+afSemitones) : String(afSemitones);
   updateAfRateBadge();
+  if(currentAfKey){
+    const entry = getAfEntry(currentAfKey, '');
+    entry.lastSemitones = afSemitones;
+    upsertAfEntry(entry);
+  }
 }
 document.querySelectorAll('#afKeyGrid .keybtn').forEach(b=>{
   b.addEventListener('click', ()=> setAfSemitones(parseFloat(b.dataset.semi)));
