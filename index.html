@@ -202,12 +202,108 @@ body{
 .keybtn.active{background:var(--amber);color:#241a08;border-color:var(--amber);font-weight:700;}
 .hint{font-size:10.5px;color:var(--muted-2);font-family:var(--font-mono);line-height:1.5;margin-top:2px;}
 
+/* ---------- audio settings ---------- */
+.flabel{display:block;font-size:10px;color:var(--muted);font-family:var(--font-mono);letter-spacing:.05em;margin:10px 0 5px;}
+.flabel:first-of-type{margin-top:0;}
+.sel{
+  width:100%;background:var(--surface-2);border:1px solid var(--line);color:var(--text);border-radius:8px;
+  padding:7px 8px;font-family:var(--font-mono);font-size:11.5px;
+}
+.latrow{display:flex;align-items:center;gap:6px;}
+.latrow input{
+  width:72px;background:var(--surface-2);border:1px solid var(--line);color:var(--text);border-radius:8px;
+  padding:7px 8px;font-family:var(--font-mono);font-size:12px;text-align:right;
+}
+.latrow span{font-family:var(--font-mono);font-size:11px;color:var(--muted);}
+
+/* ---------- deck (録音・比較・テイク) ---------- */
+.mainwrap{flex:1;min-width:0;display:flex;flex-direction:column;min-height:0;}
+.mainwrap .main{flex:1;min-height:0;padding-bottom:0;}
+.deck{
+  flex:none;display:grid;grid-template-columns:minmax(210px,1fr) minmax(250px,1.2fr) minmax(280px,1.6fr);
+  gap:12px;padding:12px 18px 16px;height:262px;
+}
+.card{
+  background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;
+  display:flex;flex-direction:column;gap:8px;min-height:0;overflow:hidden;
+}
+.card h2{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0;font-weight:700;display:flex;align-items:center;gap:8px;}
+.card h2 .count{color:var(--muted-2);font-family:var(--font-mono);}
+.deckmsg{font-size:11px;color:var(--red);font-family:var(--font-mono);min-height:13px;line-height:1.4;}
+
+.recrow{display:flex;align-items:center;gap:10px;}
+.recbtn{
+  flex:none;border:1px solid var(--red);background:transparent;color:var(--red);border-radius:var(--radius);
+  padding:10px 14px;font-family:var(--font-display);font-weight:700;font-size:13px;cursor:pointer;
+}
+.recbtn:hover{background:rgba(226,100,95,.12);}
+.recbtn.on{background:var(--red);color:#2a0d0c;animation:recpulse 1.2s ease-in-out infinite;}
+@keyframes recpulse{50%{filter:brightness(1.25);}}
+.recinfo{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;}
+.recstatus{font-family:var(--font-mono);font-size:11.5px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.meter{height:6px;background:var(--bg);border:1px solid var(--line);border-radius:4px;overflow:hidden;}
+.meter div{height:100%;width:0%;background:var(--teal);transition:width .06s linear;}
+.meter div.hot{background:var(--red);}
+.optrow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-family:var(--font-mono);font-size:11px;color:var(--muted);}
+.optrow input[type=number]{
+  width:52px;background:var(--surface-2);border:1px solid var(--line);color:var(--text);border-radius:6px;
+  padding:4px 5px;font-family:var(--font-mono);font-size:11px;
+}
+.optrow input[type=checkbox]{accent-color:var(--amber);}
+
+.cmpmodes{display:flex;gap:6px;}
+.cmpmode{
+  flex:1;background:var(--surface-2);border:1px solid var(--line);color:var(--muted);border-radius:8px;
+  padding:6px 4px;font-family:var(--font-display);font-weight:700;font-size:11.5px;cursor:pointer;
+}
+.cmpmode:hover{color:var(--text);border-color:var(--muted-2);}
+.cmpmode.active{background:var(--amber);color:#241a08;border-color:var(--amber);}
+.ch{display:flex;align-items:center;gap:6px;}
+.chname{width:108px;flex:none;font-size:11px;font-family:var(--font-mono);color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.chname.empty{color:var(--muted-2);}
+.ch input[type=range]{flex:1;min-width:0;accent-color:var(--teal);}
+.msbtn{
+  flex:none;width:26px;height:23px;background:transparent;border:1px solid var(--line);color:var(--muted);
+  border-radius:6px;font-family:var(--font-mono);font-size:10.5px;font-weight:700;cursor:pointer;
+}
+.msbtn:hover{color:var(--text);border-color:var(--muted-2);}
+.msbtn.m.on{background:var(--red);border-color:var(--red);color:#2a0d0c;}
+.msbtn.s.on{background:var(--amber);border-color:var(--amber);color:#241a08;}
+.cmprow{display:flex;align-items:center;gap:8px;margin-top:auto;}
+.cmprow .btn.on{background:var(--teal);border-color:var(--teal);color:#0b2a20;}
+
+.takes .list{overflow-y:auto;flex:1;min-height:0;padding-right:2px;}
+.takes .list::-webkit-scrollbar{width:6px;}
+.takes .list::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px;}
+.take{flex-direction:column;align-items:stretch;gap:5px;padding:7px 8px;}
+.take.slot1{border-color:var(--teal);}
+.take.slot2{border-color:#7d8cff;}
+.take .top{display:flex;align-items:center;gap:6px;}
+.take .star{background:transparent;border:none;color:var(--muted-2);font-size:14px;cursor:pointer;padding:0 2px;flex:none;}
+.take .star.on{color:var(--amber);}
+.take .tname{
+  flex:1;min-width:0;background:transparent;border:1px solid transparent;border-radius:5px;color:var(--text);
+  font-family:var(--font-display);font-weight:700;font-size:12px;padding:2px 4px;
+}
+.take .tname:hover,.take .tname:focus{border-color:var(--line);background:var(--bg);outline:none;}
+.take .acts button.slotbtn{width:auto;padding:0 6px;font-family:var(--font-mono);font-size:10.5px;}
+.take .acts button.slotbtn.on1{background:var(--teal);border-color:var(--teal);color:#0b2a20;}
+.take .acts button.slotbtn.on2{background:#7d8cff;border-color:#7d8cff;color:#10143a;}
+.take .bottom{display:flex;align-items:center;gap:8px;font-size:10.5px;color:var(--muted-2);font-family:var(--font-mono);}
+.take .bottom .meta{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.take .bottom input{
+  width:52px;background:var(--bg);border:1px solid var(--line);color:var(--text);border-radius:5px;
+  padding:2px 4px;font-family:var(--font-mono);font-size:10.5px;text-align:right;
+}
+
 @media(max-width:820px){
   html,body{overflow:auto;}
   .app{flex-direction:column;height:auto;min-height:100vh;}
   .sidebar{width:100%;max-height:44vh;border-right:none;border-bottom:1px solid var(--line);}
   .main{padding:12px;}
   .stage{aspect-ratio:16/9;flex:none;}
+  .deck{grid-template-columns:1fr;height:auto;padding:12px;}
+  .takes .list{max-height:320px;}
 }
 </style>
 </head>
@@ -375,8 +471,34 @@ body{
         <div class="hint">同じファイルをもう一度選択/ドロップすると、前回の速度・キー・保存済みループを自動的に復元します。</div>
       </div>
     </div>
+
+    <div id="commonSidebar">
+      <div class="block">
+        <h2>オーディオ設定</h2>
+        <label class="flabel" for="inDev">入力（録音）</label>
+        <select class="sel" id="inDev"><option value="">既定のデバイス</option></select>
+        <label class="flabel" for="inCh">入力チャンネル</label>
+        <select class="sel" id="inCh">
+          <option value="0">IN 1（L）</option>
+          <option value="1">IN 2（R）</option>
+          <option value="-1">IN 1+2 ミックス</option>
+        </select>
+        <label class="flabel" for="outDev">出力（再生）</label>
+        <select class="sel" id="outDev"><option value="">既定のデバイス</option></select>
+        <div class="hint" id="outHint"></div>
+        <button class="usecur" id="devPerm">デバイス名を表示（マイクを許可）</button>
+        <label class="flabel" for="latMs">遅延補正（出力→入力の往復）</label>
+        <div class="latrow">
+          <input type="number" id="latMs" step="1" min="0" max="1000">
+          <span>ms</span>
+          <button class="btn small" id="latMeasure">自動測定</button>
+        </div>
+        <div class="hint" id="latHint"></div>
+      </div>
+    </div>
   </aside>
 
+  <div class="mainwrap">
   <main class="main" id="youtubeMain">
     <div class="stage" id="stage">
       <div id="player"></div>
@@ -441,6 +563,63 @@ body{
       </div>
     </div>
   </main>
+
+  <section class="deck" id="deck">
+    <div class="card rec">
+      <h2>録音</h2>
+      <div class="recrow">
+        <button class="recbtn" id="recBtn">● 録音</button>
+        <div class="recinfo">
+          <div class="recstatus" id="recStatus">待機中</div>
+          <div class="meter"><div id="inMeter"></div></div>
+        </div>
+      </div>
+      <div class="optrow">
+        <label><input type="checkbox" id="countInOn"> カウントイン</label>
+        <input type="number" id="countBpm" value="120" min="30" max="300"> BPM ×
+        <input type="number" id="countBeats" value="4" min="1" max="8">
+      </div>
+      <div class="deckmsg" id="deckMsg"></div>
+      <div class="hint" id="recHint">A/Bを設定して録音すると、ループ1周ごとに1テイクとして保存します。原曲が録音に混ざらないようヘッドホン推奨。</div>
+    </div>
+
+    <div class="card mixer">
+      <h2>比較ミキサー</h2>
+      <div class="cmpmodes">
+        <button class="cmpmode active" data-cmp="sim">同時</button>
+        <button class="cmpmode" data-cmp="alt">交互</button>
+        <button class="cmpmode" data-cmp="split">左右</button>
+      </div>
+      <div class="ch" data-ch="src">
+        <span class="chname">原曲</span>
+        <input type="range" min="0" max="1" step="0.01" value="1">
+        <button class="msbtn m" data-act="m">M</button>
+        <button class="msbtn s" data-act="s">S</button>
+      </div>
+      <div class="ch" data-ch="t1">
+        <span class="chname empty" id="t1Name">テイク1: なし</span>
+        <input type="range" min="0" max="1" step="0.01" value="1">
+        <button class="msbtn m" data-act="m">M</button>
+        <button class="msbtn s" data-act="s">S</button>
+      </div>
+      <div class="ch" data-ch="t2">
+        <span class="chname empty" id="t2Name">テイク2: なし</span>
+        <input type="range" min="0" max="1" step="0.01" value="1">
+        <button class="msbtn m" data-act="m">M</button>
+        <button class="msbtn s" data-act="s">S</button>
+      </div>
+      <div class="cmprow">
+        <button class="btn small" id="cmpBtn">▶ 比較再生</button>
+        <span class="hint" id="cmpHint">テイク一覧の「1」「2」で割り当て</span>
+      </div>
+    </div>
+
+    <div class="card takes">
+      <h2>テイク <span class="count" id="takeCount"></span></h2>
+      <div class="list" id="takeList"><div class="empty-list">なし</div></div>
+    </div>
+  </section>
+  </div>
 </div>
 
 <script type="module">
@@ -516,6 +695,8 @@ let loopOn = false;
 let startSec = 0, endSec = 0;
 let rafId = null;
 let dragging = false;
+let ytRef = null;       // ループ先頭へシーク後、先頭が鳴った時刻(AudioContext時間)を推定するための標本
+let ytLastWrap = 0;
 
 const $ = sel => document.querySelector(sel);
 const msg = $('#msg');
@@ -539,16 +720,26 @@ const customVal = $('#customVal');
 /* ---------- YouTube IFrame API ---------- */
 const tag = document.createElement('script');
 tag.src = 'https://www.youtube.com/iframe_api';
+const YT_BLOCKED_MSG = 'YouTubeプレイヤーを読み込めませんでした。Braveの場合はアドレスバーの🦁(Shields)をこのサイトでOFFにするか、広告ブロック系の拡張機能を無効にして再読み込みしてください。';
+tag.onerror = ()=>{ msg.textContent = YT_BLOCKED_MSG; };
 document.head.appendChild(tag);
+setTimeout(()=>{ if(!playerReady) msg.textContent = YT_BLOCKED_MSG; }, 8000);
 
 window.onYouTubeIframeAPIReady = function(){
   playerReady = true;
+  msg.textContent = '';
   const last = localStorage.getItem(LAST_KEY);
   if(last){ loadVideo(last, true); }
 };
 
+let readyWatchdog = null;
 function ensurePlayer(id, resumeState){
   if(!player){
+    clearTimeout(readyWatchdog);
+    readyWatchdog = setTimeout(()=>{
+      msg.textContent = 'YouTubeプレイヤーの初期化が完了しません。Braveの場合はShields(🦁)をこのサイトでOFFにするか、広告ブロック系の拡張機能を無効にして再読み込みしてください。';
+    }, 10000);
+    try{
     player = new YT.Player('player', {
       videoId: id,
       playerVars:{
@@ -557,9 +748,17 @@ function ensurePlayer(id, resumeState){
       },
       events:{
         onReady: ()=> onPlayerReady(resumeState),
-        onStateChange: onPlayerStateChange
+        onStateChange: onPlayerStateChange,
+        onError: onPlayerError
       }
     });
+    }catch(err){
+      clearTimeout(readyWatchdog);
+      player = null;
+      msg.textContent = 'YouTubeプレイヤーの作成に失敗しました: ' + err.message;
+    }
+  } else if(typeof player.cueVideoById !== 'function'){
+    msg.textContent = 'YouTubeプレイヤーの初期化が完了していません。ページを再読み込みしてください。';
   } else {
     player.cueVideoById(id);
     setTimeout(()=> onPlayerReady(resumeState), 400);
@@ -567,6 +766,8 @@ function ensurePlayer(id, resumeState){
 }
 
 function onPlayerReady(resumeState){
+  clearTimeout(readyWatchdog);
+  if(msg.textContent.startsWith('YouTubeプレイヤー')) msg.textContent = '';
   duration = player.getDuration() || 0;
   durTime.textContent = fmtTime(duration);
   seekRange.max = duration || 100;
@@ -575,7 +776,21 @@ function onPlayerReady(resumeState){
   loopVisualLoop();
 }
 
+function onPlayerError(e){
+  const reasons = {
+    2: '動画IDが不正です',
+    5: 'このブラウザでは再生できない形式です',
+    100: '動画が見つかりません（削除または非公開）',
+    101: 'この動画は埋め込み再生が許可されていません',
+    150: 'この動画は埋め込み再生が許可されていません',
+    153: 'プレイヤーの設定エラーです（ブラウザがリファラーを送っていない可能性があります。Braveの場合はShieldsをOFFにしてください）'
+  };
+  msg.textContent = '再生エラー(' + e.data + '): ' + (reasons[e.data] || '不明なエラー');
+}
+
 function onPlayerStateChange(e){
+  if(e.data === YT.PlayerState.PLAYING) msg.textContent = '';
+  if(e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) onTransportStopped();
   playBtn.textContent = (e.data === YT.PlayerState.PLAYING) ? '❚❚' : '▶';
   if(e.data === YT.PlayerState.PLAYING && !duration){
     duration = player.getDuration() || 0;
@@ -595,9 +810,12 @@ function loopVisualLoop(){
         seekFill.style.width = duration ? (t/duration*100)+'%' : '0%';
         curTime.textContent = fmtTime(t);
       }
-      if(loopOn && endSec > startSec && t >= endSec - 0.15){
-        player.seekTo(startSec, true);
+      if(loopOn && endSec > startSec && t >= endSec - 0.15 && performance.now() - ytLastWrap > 400){
+        ytLastWrap = performance.now();
+        ytSeekLoopStart();
         player.playVideo();
+      } else {
+        ytRefTick(t);
       }
     }
     rafId = requestAnimationFrame(tick);
@@ -627,7 +845,9 @@ function loadVideo(rawUrlOrId, isResume){
   startInput.value = fmtTime(0);
   endInput.value = fmtTime(0);
 
+  if(typeof onSourceChanged === 'function') onSourceChanged();
   if(playerReady){ ensurePlayer(id, { speed: entry.lastSpeed }); }
+  else { msg.textContent = 'YouTubeプレイヤーを読み込み中です。少し待ってからもう一度「読み込む」を押してください。'; }
 
   renderPresets();
   renderHistory();
@@ -641,15 +861,39 @@ $('#urlInput').addEventListener('keydown', e=>{ if(e.key==='Enter') $('#loadBtn'
 
 /* ---------- transport controls ---------- */
 function togglePlay(){
-  if(!player) return;
+  if(!player || !player.getPlayerState) return;
   const state = player.getPlayerState();
   if(state === YT.PlayerState.PLAYING) player.pauseVideo();
+  else if(cmp.on) ytApi.playFromLoopStart();
   else player.playVideo();
+}
+
+/* ループ先頭へのシーク。先頭が実際に鳴り始めた時刻を ytRefTick で推定する */
+function ytSeekLoopStart(){
+  player.seekTo(startSec, true);
+  ytRef = (endSec > startSec) ? { samples: [], first: 0 } : null;
+}
+function ytRefTick(t){
+  if(!ytRef || !audioCtx || player.getPlayerState() !== YT.PlayerState.PLAYING) return;
+  if(t < startSec - 0.05 || t > Math.min(startSec + 2, endSec - 0.1)) return;
+  const rate = player.getPlaybackRate ? player.getPlaybackRate() : 1;
+  // getCurrentTime は更新が粗く遅れがちなので、推定値の最小(=最も新しい更新)を採用する
+  ytRef.samples.push(audioCtx.currentTime - (t - startSec) / rate);
+  if(!ytRef.first) ytRef.first = performance.now();
+  if(performance.now() - ytRef.first > 300){
+    const ref = Math.min(...ytRef.samples);
+    ytRef = null;
+    onLoopRef(ref);
+  }
 }
 playBtn.addEventListener('click', togglePlay);
 shield.addEventListener('click', togglePlay);
 
-function nudge(delta){ if(player) player.seekTo(Math.max(0, player.getCurrentTime()+delta), true); }
+function nudge(delta){
+  if(!player || !player.seekTo) return;
+  onManualSeek();
+  player.seekTo(Math.max(0, player.getCurrentTime()+delta), true);
+}
 $('#back1').addEventListener('click', ()=> nudge(-1));
 $('#back05').addEventListener('click', ()=> nudge(-0.5));
 $('#fwd05').addEventListener('click', ()=> nudge(0.5));
@@ -673,7 +917,7 @@ seekRange.addEventListener('change', ()=>{
     target = startSec;
     seekRange.value = target;
   }
-  if(player) player.seekTo(target, true);
+  if(player && player.seekTo){ onManualSeek(); player.seekTo(target, true); }
   dragging = false;
 });
 
@@ -711,18 +955,19 @@ $('#setB').addEventListener('click', ()=>{
 startInput.addEventListener('change', ()=>{ startSec = parseTime(startInput.value); updateLoopUI(); });
 endInput.addEventListener('change', ()=>{ endSec = parseTime(endInput.value); updateLoopUI(); });
 
-document.querySelectorAll('.nudgebtn').forEach(b=>{
+document.querySelectorAll('#youtubeSidebar .nudgebtn').forEach(b=>{
   b.addEventListener('click', ()=>{
     const target = b.dataset.t;
     const delta = parseFloat(b.dataset.d);
+    if(player && player.seekTo) onManualSeek();
     if(target === 'start'){
       startSec = Math.max(0, startSec + delta);
       startInput.value = fmtTime(startSec);
-      if(player) player.seekTo(startSec, true);
+      if(player && player.seekTo) player.seekTo(startSec, true);
     } else {
       endSec = Math.max(0, endSec + delta);
       endInput.value = fmtTime(endSec);
-      if(player) player.seekTo(endSec, true);
+      if(player && player.seekTo) player.seekTo(endSec, true);
     }
     updateLoopUI();
   });
@@ -805,7 +1050,7 @@ function renderPresets(){
       endInput.value = fmtTime(endSec);
       loopOn = true; loopToggle.checked = true;
       updateLoopUI();
-      if(player) player.seekTo(startSec, true);
+      if(player && player.seekTo){ onManualSeek(); ytSeekLoopStart(); }
     });
     div.querySelector('[data-act="del"]').addEventListener('click', ()=>{
       const e2 = getVideoEntry(currentId);
@@ -865,8 +1110,14 @@ const audioSidebar = $('#audioSidebar');
 const youtubeMain = $('#youtubeMain');
 const audioMain = $('#audioMain');
 
+let currentMode = 'youtube';
 function setMode(mode){
   const isYt = mode === 'youtube';
+  if(mode !== currentMode){
+    stopRecording();
+    stopCompare();
+  }
+  currentMode = mode;
   tabYoutube.classList.toggle('active', isYt);
   tabAudio.classList.toggle('active', !isYt);
   youtubeSidebar.style.display = isYt ? '' : 'none';
@@ -875,6 +1126,7 @@ function setMode(mode){
   audioMain.style.display = isYt ? 'none' : '';
   if(isYt){ pauseAudioFile(); }
   else if(player && player.pauseVideo){ player.pauseVideo(); }
+  onSourceChanged();
 }
 tabYoutube.addEventListener('click', ()=> setMode('youtube'));
 tabAudio.addEventListener('click', ()=> setMode('audio'));
@@ -915,10 +1167,24 @@ let afSpeed = 1;
 let afSemitones = 0;
 let afDragging = false;
 let currentAfKey = null;
+let afRefPending = false;   // 次のオーディオ処理ブロックがループ先頭から始まることを示すフラグ
+let afLead = 0;             // SoundTouch の先読み量(秒)。読み取り位置は実際に鳴っている位置よりこの分だけ先にある
+let afLeadProbe = false;
+const AF_BLOCK = 4096;
 
 function ensureAudioCtx(){
-  if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if(!audioCtx){
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)({ latencyHint: 'interactive' });
+    applySink();
+  }
   return audioCtx;
+}
+
+function afSeekLoopStart(){
+  if(!shifter || !afDuration) return;
+  shifter.percentagePlayed = afStartSec / afDuration;
+  afRefPending = afEndSec > afStartSec;
+  afLeadProbe = true;
 }
 
 /* ---------- 音声ファイル：履歴・プリセットの保存 ---------- */
@@ -953,6 +1219,8 @@ async function loadAudioFile(file){
     const audioBuffer = await ctx.decodeAudioData(arrayBuf);
 
     const key = afFileKey(file);
+    stopRecording();
+    stopCompare();
     currentAfKey = key;
     const entry = getAfEntry(key, file.name);
     entry.name = file.name;
@@ -960,11 +1228,11 @@ async function loadAudioFile(file){
     upsertAfEntry(entry);
 
     if(shifter){ try{ shifter.off(); shifter.disconnect(); }catch(e){} }
-    shifter = new window.PitchShifter(ctx, audioBuffer, 4096, () => {
+    shifter = new window.PitchShifter(ctx, audioBuffer, AF_BLOCK, () => {
       // ソースの終端でフレームが尽きたときに確実に呼ばれるコールバック
       if(afLoopOn && afEndSec > afStartSec){
         // ループ中に終端へ到達した場合は絶対的な先頭(0秒)へ戻さず、ループ開始点(A)へ戻して再生を続ける
-        shifter.percentagePlayed = afStartSec / afDuration;
+        afSeekLoopStart();
         return;
       }
       pauseAudioFile();
@@ -974,8 +1242,20 @@ async function loadAudioFile(file){
       afCurTime.textContent = '0:00';
     });
 
+    // 各処理ブロックの再生予定時刻(playbackTime)を捕まえ、ループ先頭が鳴る正確な時刻を得る
+    const node = shifter.node;
+    const origProcess = node.onaudioprocess;
+    node.onaudioprocess = ev => {
+      if(afRefPending){
+        afRefPending = false;
+        onLoopRef(ev.playbackTime);
+      }
+      origProcess(ev);
+    };
+
     gainNode = ctx.createGain();
-    gainNode.connect(ctx.destination);
+    gainNode.connect(ensureMixer().srcPan);
+    applyGains();
 
     afDuration = audioBuffer.duration;
     afStartSec = 0; afEndSec = 0; afLoopOn = false;
@@ -995,6 +1275,7 @@ async function loadAudioFile(file){
     setAfSemitones(entry.lastSemitones || 0);
     renderAfPresets();
     renderAfHistory();
+    onSourceChanged();
 
     shifter.on('play', detail => {
       if(afDragging) return;
@@ -1002,8 +1283,16 @@ async function loadAudioFile(file){
       afSeekRange.value = t;
       afSeekFill.style.width = afDuration ? (t/afDuration*100)+'%' : '0%';
       afCurTime.textContent = fmtTime(t);
-      if(afLoopOn && afEndSec > afStartSec && t >= afEndSec - 0.05){
-        shifter.percentagePlayed = afStartSec / afDuration;
+      const blockSec = AF_BLOCK * afSpeed / ctx.sampleRate;   // 1ブロックで進むソースの長さ
+      if(afLeadProbe){
+        // ループ先頭へシークした直後の1ブロック: 出力は1ブロック分なのに読み取りはそれより先まで進む
+        afLeadProbe = false;
+        const lead = (t - afStartSec) - blockSec;
+        if(lead >= 0 && lead < 2) afLead = lead;
+      }
+      // 実際に鳴っている位置(t - afLead)がBに最も近いブロック境界で折り返す
+      if(afLoopOn && afEndSec > afStartSec && t - afLead >= afEndSec - blockSec / 2){
+        afSeekLoopStart();
       }
     });
   }catch(err){
@@ -1023,13 +1312,19 @@ function pauseAudioFile(){
   shifter.disconnect();
   afPlaying = false;
   afPlayBtn.textContent = '▶';
+  onTransportStopped();
 }
-function toggleAudioPlay(){ afPlaying ? pauseAudioFile() : playAudioFile(); }
+function toggleAudioPlay(){
+  if(afPlaying) pauseAudioFile();
+  else if(cmp.on) afApi.playFromLoopStart();
+  else playAudioFile();
+}
 
 afPlayBtn.addEventListener('click', toggleAudioPlay);
 
 function afNudge(delta){
   if(!shifter) return;
+  onManualSeek();
   const t = Math.max(0, Math.min(afDuration, shifter.timePlayed + delta));
   shifter.percentagePlayed = afDuration ? t / afDuration : 0;
   afSeekRange.value = t;
@@ -1053,6 +1348,7 @@ afSeekRange.addEventListener('change', ()=>{
       target = afStartSec;
       afSeekRange.value = target;
     }
+    onManualSeek();
     shifter.percentagePlayed = target / afDuration;
   }
   afDragging = false;
@@ -1161,7 +1457,7 @@ function renderAfPresets(){
       afLoopOn = true; afLoopToggle.checked = true;
       updateAfLoopUI();
       setAfSemitones(p.semitones || 0);
-      if(shifter && afDuration) shifter.percentagePlayed = afStartSec / afDuration;
+      if(shifter && afDuration){ onManualSeek(); afSeekLoopStart(); }
     });
     div.querySelector('[data-act="del"]').addEventListener('click', ()=>{
       const e2 = getAfEntry(currentAfKey, '');
@@ -1270,6 +1566,757 @@ afDropzone.addEventListener('drop', e=>{
   const f = e.dataTransfer.files && e.dataTransfer.files[0];
   if(f) loadAudioFile(f);
 });
+
+/* ================================================================
+   録音・テイク・比較再生
+   タイミング合わせの考え方:
+   ループ先頭が鳴り始める時刻 ref を「録音時」と「比較再生時」で同じ方法で求める。
+   録音では入力を ref + 往復遅延(出力→入力) から切り出し、比較再生ではテイクを ref から鳴らす。
+   こうするとピッチ変更処理などの遅れは両者で相殺され、残るのは往復遅延だけになる。
+   ================================================================ */
+const deckMsg = $('#deckMsg');
+const recBtn = $('#recBtn');
+const recStatus = $('#recStatus');
+const inMeter = $('#inMeter');
+const cmpBtn = $('#cmpBtn');
+const takeListEl = $('#takeList');
+
+const sleep = ms => new Promise(r => setTimeout(r, Math.max(0, ms)));
+function curApi(){ return currentMode === 'audio' ? afApi : ytApi; }
+
+const ytApi = {
+  hasSource: ()=> !!(currentId && player && typeof player.seekTo === 'function'),
+  sourceKey: ()=> currentId ? 'yt:' + currentId : null,
+  sourceName: ()=> currentId || '',
+  loop: ()=> ({ start: startSec, end: endSec }),
+  speed: ()=> (player && player.getPlaybackRate) ? player.getPlaybackRate() : 1,
+  semitones: ()=> 0,
+  setLoop(s, e){
+    startSec = s; endSec = e;
+    startInput.value = fmtTime(s); endInput.value = fmtTime(e);
+    loopOn = true; loopToggle.checked = true;
+    updateLoopUI();
+  },
+  applyTake(t){ this.setLoop(t.loopStart, t.loopEnd); setRate(t.speed, false); },
+  playFromLoopStart(){ ytSeekLoopStart(); player.playVideo(); },
+  pause(){ if(player && player.pauseVideo) player.pauseVideo(); }
+};
+const afApi = {
+  hasSource: ()=> !!(shifter && currentAfKey),
+  sourceKey: ()=> currentAfKey ? 'af:' + currentAfKey : null,
+  sourceName: ()=> afFilename.textContent,
+  loop: ()=> ({ start: afStartSec, end: afEndSec }),
+  speed: ()=> afSpeed,
+  semitones: ()=> afSemitones,
+  setLoop(s, e){
+    afStartSec = s; afEndSec = e;
+    afStartInput.value = fmtTime(s); afEndInput.value = fmtTime(e);
+    afLoopOn = true; afLoopToggle.checked = true;
+    updateAfLoopUI();
+  },
+  applyTake(t){ this.setLoop(t.loopStart, t.loopEnd); setAfSpeed(t.speed); setAfSemitones(t.semitones || 0); },
+  playFromLoopStart(){ afSeekLoopStart(); playAudioFile(); },
+  pause(){ pauseAudioFile(); }
+};
+
+/* ---------- オーディオ設定（入力A / 出力B / 遅延補正） ---------- */
+const AUDIO_CFG_KEY = 'earcopy_audio_cfg_v1';
+const audioCfg = (()=>{
+  try{ return Object.assign({ inId:'', outId:'', ch:0, latency:{} }, JSON.parse(localStorage.getItem(AUDIO_CFG_KEY)) || {}); }
+  catch(e){ return { inId:'', outId:'', ch:0, latency:{} }; }
+})();
+function saveAudioCfg(){ try{ localStorage.setItem(AUDIO_CFG_KEY, JSON.stringify(audioCfg)); }catch(e){} }
+const latKey = ()=> (audioCfg.inId || 'default') + '|' + (audioCfg.outId || 'default');
+function estimatedLatencyMs(){
+  if(!audioCtx) return 20;
+  return Math.round(((audioCtx.baseLatency || 0) + (audioCtx.outputLatency || 0)) * 1000 + 10);
+}
+function getLatencySec(){
+  const v = audioCfg.latency[latKey()];
+  return (v != null ? v : estimatedLatencyMs()) / 1000;
+}
+const inDevSel = $('#inDev');
+const inChSel = $('#inCh');
+const outDevSel = $('#outDev');
+const latInput = $('#latMs');
+const latHint = $('#latHint');
+const outHint = $('#outHint');
+const sinkSupported = typeof AudioContext !== 'undefined' && 'setSinkId' in AudioContext.prototype;
+
+function updateLatencyUI(){
+  const v = audioCfg.latency[latKey()];
+  latInput.value = v != null ? v : estimatedLatencyMs();
+  latHint.textContent = (v != null ? '保存済み（この入力×出力の組み合わせ）。' : '未測定のため推定値です。') +
+    '出力Bの端子を入力Aにケーブルでつないで「自動測定」すると正確になります（音量注意）。';
+}
+async function refreshDevices(){
+  if(!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) return;
+  const devs = await navigator.mediaDevices.enumerateDevices();
+  const fill = (sel, kind, cur) => {
+    const list = devs.filter(d => d.kind === kind && d.deviceId && d.deviceId !== 'default');
+    sel.innerHTML = '<option value="">既定のデバイス</option>' + list.map((d, i) =>
+      `<option value="${escapeHtml(d.deviceId)}">${escapeHtml(d.label || ((kind === 'audioinput' ? '入力 ' : '出力 ') + (i + 1)))}</option>`).join('');
+    sel.value = list.some(d => d.deviceId === cur) ? cur : '';
+  };
+  fill(inDevSel, 'audioinput', audioCfg.inId);
+  fill(outDevSel, 'audiooutput', audioCfg.outId);
+}
+const OUT_HINT_BASE = (sinkSupported ? '' : 'このブラウザは出力先の選択に未対応です（Chrome / Brave / Edge で利用可）。') +
+  'YouTubeの音はここでは切り替えられません。Windowsの「設定→サウンド→音量ミキサー」でブラウザの出力先をBにしてください。';
+async function applySink(){
+  if(!audioCtx || !sinkSupported) return;
+  try{
+    await audioCtx.setSinkId(audioCfg.outId || '');
+    outHint.textContent = OUT_HINT_BASE;
+  }catch(e){
+    outHint.textContent = '出力デバイスを切り替えられませんでした: ' + e.message + '。' + OUT_HINT_BASE;
+  }
+}
+outHint.textContent = OUT_HINT_BASE;
+inChSel.value = String(audioCfg.ch);
+updateLatencyUI();
+refreshDevices();
+if(navigator.mediaDevices && navigator.mediaDevices.addEventListener){
+  navigator.mediaDevices.addEventListener('devicechange', refreshDevices);
+}
+
+inDevSel.addEventListener('change', ()=>{
+  audioCfg.inId = inDevSel.value; saveAudioCfg();
+  closeInput(); updateLatencyUI();
+  if(recNode) openInput().catch(err => { deckMsg.textContent = inputErrorText(err); });
+});
+inChSel.addEventListener('change', ()=>{
+  audioCfg.ch = parseInt(inChSel.value, 10); saveAudioCfg();
+  if(recNode) recNode.port.postMessage({ ch: audioCfg.ch });
+});
+outDevSel.addEventListener('change', ()=>{
+  audioCfg.outId = outDevSel.value; saveAudioCfg();
+  applySink(); updateLatencyUI();
+});
+latInput.addEventListener('change', ()=>{
+  const v = Math.round(parseFloat(latInput.value));
+  if(isFinite(v) && v >= 0){ audioCfg.latency[latKey()] = v; saveAudioCfg(); }
+  updateLatencyUI();
+});
+$('#devPerm').addEventListener('click', async ()=>{
+  try{ ensureAudioCtx().resume(); await openInput(); deckMsg.textContent = ''; }
+  catch(err){ deckMsg.textContent = inputErrorText(err); }
+});
+
+/* ---------- 入力キャプチャ（AudioWorklet） ---------- */
+const REC_WORKLET = `
+class EarcopyRec extends AudioWorkletProcessor{
+  constructor(){
+    super();
+    this.ch = 0; this.on = false;
+    this.buf = new Float32Array(8192); this.len = 0; this.start = 0;
+    this.peak = 0; this.peakN = 0;
+    this.port.onmessage = e => {
+      const d = e.data;
+      if('ch' in d) this.ch = d.ch;
+      if('on' in d){
+        if(!d.on && this.on){ this.flush(); this.port.postMessage({ type:'flushed' }); }
+        if(d.on && !this.on) this.len = 0;
+        this.on = d.on;
+      }
+    };
+  }
+  flush(){
+    if(this.len){ this.port.postMessage({ type:'chunk', frame:this.start, data:this.buf.slice(0, this.len) }); this.len = 0; }
+  }
+  process(inputs){
+    const inp = inputs[0];
+    let d = null;
+    if(inp && inp.length){
+      if(this.ch < 0 && inp.length > 1){
+        d = new Float32Array(inp[0].length);
+        for(let i = 0; i < d.length; i++) d[i] = (inp[0][i] + inp[1][i]) * 0.5;
+      } else {
+        d = inp[Math.min(Math.max(this.ch, 0), inp.length - 1)];
+      }
+      for(let i = 0; i < d.length; i++){ const a = Math.abs(d[i]); if(a > this.peak) this.peak = a; }
+    }
+    this.peakN += 128;
+    if(this.peakN >= 2048){ this.port.postMessage({ type:'level', peak:this.peak }); this.peak = 0; this.peakN = 0; }
+    if(this.on){
+      const frames = d ? d.length : 128;
+      if(this.len && (this.start + this.len !== currentFrame || this.len + frames > this.buf.length)) this.flush();
+      if(this.len === 0) this.start = currentFrame;
+      if(d) this.buf.set(d, this.len); else this.buf.fill(0, this.len, this.len + frames);
+      this.len += frames;
+      if(this.len >= 4096) this.flush();
+    }
+    return true;
+  }
+}
+registerProcessor('earcopy-rec', EarcopyRec);
+`;
+let recNode = null, recNodePromise = null;
+let inStream = null, inSrc = null, inStreamId = null;
+let capture = null;
+
+function inputErrorText(err){
+  if(err && (err.name === 'NotAllowedError' || err.name === 'SecurityError')) return 'マイクの使用が許可されていません。アドレスバーの設定から許可してください。';
+  if(err && (err.name === 'NotFoundError' || err.name === 'OverconstrainedError')) return '入力デバイスが見つかりません。オーディオ設定を確認してください。';
+  return '入力を開けませんでした: ' + (err && err.message || err);
+}
+function ensureRecNode(){
+  if(recNodePromise) return recNodePromise;
+  recNodePromise = (async ()=>{
+    const ctx = ensureAudioCtx();
+    const url = URL.createObjectURL(new Blob([REC_WORKLET], { type: 'application/javascript' }));
+    await ctx.audioWorklet.addModule(url);
+    recNode = new AudioWorkletNode(ctx, 'earcopy-rec', {
+      numberOfInputs: 1, numberOfOutputs: 1, outputChannelCount: [1],
+      channelCountMode: 'max', channelInterpretation: 'discrete'
+    });
+    const sink = ctx.createGain();
+    sink.gain.value = 0;
+    recNode.connect(sink);
+    sink.connect(ctx.destination);
+    recNode.port.onmessage = onRecMessage;
+    recNode.port.postMessage({ ch: audioCfg.ch });
+    return recNode;
+  })();
+  recNodePromise.catch(()=>{ recNodePromise = null; });
+  return recNodePromise;
+}
+async function openInput(){
+  await ensureRecNode();
+  if(inStream && inStreamId === audioCfg.inId && inStream.active) return;
+  closeInput();
+  const constraints = { echoCancellation: false, noiseSuppression: false, autoGainControl: false, channelCount: { ideal: 2 } };
+  if(audioCfg.inId) constraints.deviceId = { exact: audioCfg.inId };
+  inStream = await navigator.mediaDevices.getUserMedia({ audio: constraints });
+  inStreamId = audioCfg.inId;
+  inSrc = audioCtx.createMediaStreamSource(inStream);
+  inSrc.connect(recNode);
+  refreshDevices();
+}
+function closeInput(){
+  if(inSrc){ try{ inSrc.disconnect(); }catch(e){} inSrc = null; }
+  if(inStream){ inStream.getTracks().forEach(t => t.stop()); inStream = null; }
+  inStreamId = null;
+}
+function onRecMessage(e){
+  const d = e.data;
+  if(d.type === 'level'){
+    const pct = Math.min(100, Math.sqrt(d.peak) * 100);
+    inMeter.style.width = pct + '%';
+    inMeter.classList.toggle('hot', d.peak > 0.9);
+  } else if(d.type === 'chunk'){
+    if(capture) capture.chunks.push(d);
+  } else if(d.type === 'flushed'){
+    if(capture && capture.done){ const c = capture; capture = null; c.done(c); }
+  }
+}
+function startCapture(){
+  capture = { chunks: [] };
+  recNode.port.postMessage({ on: true });
+}
+function stopCapture(){
+  return new Promise(res => {
+    if(!capture) return res(null);
+    capture.done = res;
+    recNode.port.postMessage({ on: false });
+  });
+}
+function sliceCapture(c, fromT, toT){
+  const sr = audioCtx.sampleRate;
+  const f0 = Math.round(fromT * sr), f1 = Math.round(toT * sr);
+  const out = new Float32Array(Math.max(0, f1 - f0));
+  for(const ch of c.chunks){
+    const a = Math.max(f0, ch.frame), b = Math.min(f1, ch.frame + ch.data.length);
+    if(b > a) out.set(ch.data.subarray(a - ch.frame, b - ch.frame), a - f0);
+  }
+  return out;
+}
+
+/* ---------- クリック音（カウントイン・遅延測定） ---------- */
+function playClick(when, accent, gain){
+  const ctx = audioCtx, sr = ctx.sampleRate;
+  const n = Math.round(sr * 0.004);
+  const buf = ctx.createBuffer(1, n, sr);
+  const d = buf.getChannelData(0);
+  const f = accent ? 1600 : 1000;
+  for(let i = 0; i < n; i++) d[i] = Math.sin(2 * Math.PI * f * i / sr) * (1 - i / n);
+  const src = ctx.createBufferSource();
+  const g = ctx.createGain();
+  g.gain.value = gain;
+  src.buffer = buf;
+  src.connect(g); g.connect(ctx.destination);
+  src.start(when);
+}
+
+$('#latMeasure').addEventListener('click', async ()=>{
+  if(rec.active || cmp.on){ deckMsg.textContent = '録音・比較再生を止めてから測定してください'; return; }
+  const btn = $('#latMeasure');
+  btn.disabled = true;
+  latHint.textContent = '測定中…（クリック音が6回鳴ります）';
+  try{
+    await ensureAudioCtx().resume();
+    await openInput();
+    startCapture();
+    const t0 = audioCtx.currentTime + 0.6, gap = 0.6, times = [];
+    for(let i = 0; i < 6; i++){ times.push(t0 + i * gap); playClick(t0 + i * gap, false, 0.8); }
+    await sleep((t0 + 6 * gap + 0.3 - audioCtx.currentTime) * 1000);
+    const c = await stopCapture();
+    const results = [];
+    for(const t of times){
+      const w = sliceCapture(c, t, t + 0.5);
+      let peak = 0;
+      for(const v of w){ const a = Math.abs(v); if(a > peak) peak = a; }
+      if(peak < 0.02) continue;
+      const idx = w.findIndex(v => Math.abs(v) > peak * 0.5);
+      if(idx >= 0) results.push(idx / audioCtx.sampleRate * 1000);
+    }
+    if(results.length < 3){
+      latHint.textContent = 'クリック音を検出できませんでした。出力Bと入力Aがケーブルでつながっているか、入力チャンネルとレベルを確認してください。';
+    } else {
+      results.sort((a, b) => a - b);
+      const med = Math.round(results[Math.floor(results.length / 2)]);
+      audioCfg.latency[latKey()] = med; saveAudioCfg();
+      updateLatencyUI();
+      latHint.textContent = `測定結果: ${med} ms（${results.length}/6回検出）。` + latHint.textContent;
+    }
+  }catch(err){
+    latHint.textContent = inputErrorText(err);
+  }finally{
+    btn.disabled = false;
+  }
+});
+
+/* ---------- テイク保存（IndexedDB） ---------- */
+const takeDB = (()=>{
+  let dbp = null;
+  function open(){
+    if(!dbp) dbp = new Promise((res, rej)=>{
+      const r = indexedDB.open('earcopy_takes', 1);
+      r.onupgradeneeded = ()=>{
+        const s = r.result.createObjectStore('takes', { keyPath: 'id' });
+        s.createIndex('source', 'sourceKey');
+      };
+      r.onsuccess = ()=> res(r.result);
+      r.onerror = ()=> rej(r.error);
+    });
+    return dbp;
+  }
+  async function run(mode, fn){
+    const db = await open();
+    return new Promise((res, rej)=>{
+      const tx = db.transaction('takes', mode);
+      const req = fn(tx.objectStore('takes'));
+      tx.oncomplete = ()=> res(req ? req.result : undefined);
+      tx.onerror = ()=> rej(tx.error);
+    });
+  }
+  return {
+    put: t => run('readwrite', s => s.put(t)),
+    del: id => run('readwrite', s => s.delete(id)),
+    bySource: key => run('readonly', s => s.index('source').getAll(key))
+  };
+})();
+
+let takes = [];                 // 現在のソースのテイク
+const takeBufCache = new Map(); // id -> AudioBuffer
+
+function takeAudioBuffer(t){
+  let b = takeBufCache.get(t.id);
+  if(!b){
+    b = audioCtx.createBuffer(1, t.data.length, t.sampleRate);
+    b.copyToChannel(t.data, 0);
+    takeBufCache.set(t.id, b);
+  }
+  return b;
+}
+
+async function refreshTakes(){
+  const key = curApi().sourceKey();
+  if(!key){ takes = []; renderTakes(); return; }
+  try{
+    const list = await takeDB.bySource(key);
+    if(curApi().sourceKey() !== key) return;
+    takes = list.sort((a, b) => b.createdAt - a.createdAt);
+  }catch(e){
+    takes = [];
+    deckMsg.textContent = 'テイクの読み込みに失敗しました: ' + e.message;
+  }
+  renderTakes();
+}
+
+function renderTakes(){
+  $('#takeCount').textContent = takes.length ? takes.length + '件' : '';
+  if(!takes.length){ takeListEl.innerHTML = '<div class="empty-list">なし</div>'; renderSlots(); return; }
+  takeListEl.innerHTML = '';
+  takes.forEach(t => {
+    const div = document.createElement('div');
+    const s1 = cmp.slots.t1 && cmp.slots.t1.id === t.id;
+    const s2 = cmp.slots.t2 && cmp.slots.t2.id === t.id;
+    div.className = 'item take' + (s1 ? ' slot1' : '') + (s2 ? ' slot2' : '');
+    const semi = t.semitones > 0 ? '+' + t.semitones : String(t.semitones || 0);
+    const len = (t.data.length / t.sampleRate).toFixed(1);
+    div.innerHTML = `
+      <div class="top">
+        <button class="star${t.star ? ' on' : ''}" title="お気に入り">★</button>
+        <input class="tname" value="${escapeHtml(t.name)}" maxlength="40">
+        <div class="acts">
+          <button class="slotbtn${s1 ? ' on1' : ''}" data-slot="t1" title="テイク1に割り当て">1</button>
+          <button class="slotbtn${s2 ? ' on2' : ''}" data-slot="t2" title="テイク2に割り当て">2</button>
+          <button data-act="wav" title="WAVで保存">⬇</button>
+          <button data-act="del" title="削除">✕</button>
+        </div>
+      </div>
+      <div class="bottom">
+        <span class="meta">${fmtTime(t.loopStart)}→${fmtTime(t.loopEnd)} · ${t.speed}x · Key ${semi} · ${len}s</span>
+        <span>ズレ</span><input type="number" step="5" value="${t.nudgeMs || 0}" title="このテイクだけの位置補正(ms)。＋で遅らせる"><span>ms</span>
+      </div>`;
+    div.querySelector('.star').addEventListener('click', async ()=>{ t.star = !t.star; await takeDB.put(t); renderTakes(); });
+    div.querySelector('.tname').addEventListener('change', async e=>{
+      t.name = e.target.value.trim() || t.name; await takeDB.put(t); renderSlots();
+    });
+    div.querySelectorAll('.slotbtn').forEach(b => b.addEventListener('click', ()=> assignSlot(b.dataset.slot, t)));
+    div.querySelector('[data-act="wav"]').addEventListener('click', ()=> downloadWav(t));
+    div.querySelector('[data-act="del"]').addEventListener('click', async ()=>{
+      await takeDB.del(t.id);
+      takeBufCache.delete(t.id);
+      ['t1', 't2'].forEach(k => { if(cmp.slots[k] && cmp.slots[k].id === t.id) cmp.slots[k] = null; });
+      takes = takes.filter(x => x.id !== t.id);
+      renderTakes();
+    });
+    div.querySelector('.bottom input').addEventListener('change', async e=>{
+      t.nudgeMs = Math.round(parseFloat(e.target.value) || 0); await takeDB.put(t);
+    });
+    takeListEl.appendChild(div);
+  });
+  renderSlots();
+}
+
+function downloadWav(t){
+  const data = t.data, sr = t.sampleRate;
+  const buf = new ArrayBuffer(44 + data.length * 2);
+  const v = new DataView(buf);
+  const w = (o, s) => { for(let i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); };
+  w(0, 'RIFF'); v.setUint32(4, 36 + data.length * 2, true); w(8, 'WAVE');
+  w(12, 'fmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+  v.setUint32(24, sr, true); v.setUint32(28, sr * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true);
+  w(36, 'data'); v.setUint32(40, data.length * 2, true);
+  for(let i = 0; i < data.length; i++){
+    const s = Math.max(-1, Math.min(1, data[i]));
+    v.setInt16(44 + i * 2, s < 0 ? s * 0x8000 : s * 0x7fff, true);
+  }
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([buf], { type: 'audio/wav' }));
+  a.download = (t.sourceName || 'take').replace(/\.[^.]+$/, '') + '_' + t.name.replace(/[\\/:*?"<>|]/g, '_') + '.wav';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=> URL.revokeObjectURL(a.href), 5000);
+}
+
+/* ---------- 録音 ---------- */
+let rec = { active: false };
+
+async function startRecording(){
+  const api = curApi();
+  deckMsg.textContent = '';
+  if(!api.hasSource()){ deckMsg.textContent = '先に動画または音声ファイルを読み込んでください'; return; }
+  const lp = api.loop();
+  if(!(lp.end > lp.start)){ deckMsg.textContent = 'A/Bのループ範囲を先に設定してください'; return; }
+  stopCompare();
+  try{
+    await ensureAudioCtx().resume();
+    await openInput();
+  }catch(err){ deckMsg.textContent = inputErrorText(err); return; }
+  api.pause();
+  api.setLoop(lp.start, lp.end);
+  rec = {
+    active: true, api, refs: [], mode: currentMode,
+    graceUntil: performance.now() + 1500,   // 直前の一時停止イベント(YouTubeは遅れて届く)で止まらないように
+    sourceKey: api.sourceKey(), sourceName: api.sourceName(),
+    loopStart: lp.start, loopEnd: lp.end,
+    speed: Math.round(api.speed() * 100) / 100, semitones: api.semitones(),
+    latency: getLatencySec()
+  };
+  startCapture();
+  recBtn.textContent = '■ 停止';
+  recBtn.classList.add('on');
+  if($('#countInOn').checked){
+    const bpm = Math.min(300, Math.max(30, parseFloat($('#countBpm').value) || 120));
+    const beats = Math.min(8, Math.max(1, parseInt($('#countBeats').value, 10) || 4));
+    const beat = 60 / bpm;
+    const t0 = audioCtx.currentTime + 0.15;
+    for(let i = 0; i < beats; i++) playClick(t0 + i * beat, i === 0, 0.35);
+    recStatus.textContent = 'カウントイン…';
+    const lead = currentMode === 'audio' ? 0.1 : 0.35;
+    await sleep((t0 + beats * beat - lead - audioCtx.currentTime) * 1000);
+    if(!rec.active) return;
+  }
+  updateRecStatus();
+  api.playFromLoopStart();
+}
+
+function completedPairs(refs){
+  let n = 0;
+  for(let i = 0; i + 1 < refs.length; i++) if(refs[i] != null && refs[i + 1] != null) n++;
+  return n;
+}
+function updateRecStatus(){
+  if(!rec.active){ recStatus.textContent = '待機中'; return; }
+  recStatus.textContent = `録音中 · 完了テイク ${completedPairs(rec.refs)}`;
+}
+
+async function stopRecording(){
+  if(!rec.active) return;
+  const r = rec;
+  r.active = false;
+  const stopAt = audioCtx.currentTime;
+  recBtn.textContent = '● 録音';
+  recBtn.classList.remove('on');
+  recStatus.textContent = '保存中…';
+  r.api.pause();
+  // 最後の区間の音が入力に届くまで待ってからキャプチャを止める
+  await sleep((r.latency + 0.3) * 1000);
+  const c = await stopCapture();
+  if(!c){ recStatus.textContent = '待機中'; return; }
+
+  const segs = [];
+  for(let i = 0; i + 1 < r.refs.length; i++){
+    if(r.refs[i] != null && r.refs[i + 1] != null) segs.push([r.refs[i], r.refs[i + 1], false]);
+  }
+  const last = r.refs[r.refs.length - 1];
+  if(last != null && stopAt - last >= 1) segs.push([last, stopAt, true]);   // 途中で止めた最後の周も1秒以上なら残す
+
+  const existing = r.sourceKey === curApi().sourceKey() ? takes.length : 0;
+  const created = [];
+  segs.forEach(([a, b, partial], i) => {
+    const data = sliceCapture(c, a + r.latency, b + r.latency);
+    if(data.length < audioCtx.sampleRate * 0.3) return;
+    created.push({
+      id: Date.now().toString(36) + '_' + i + '_' + Math.random().toString(36).slice(2, 6),
+      sourceKey: r.sourceKey, sourceName: r.sourceName, mode: r.mode,
+      loopStart: r.loopStart, loopEnd: r.loopEnd, speed: r.speed, semitones: r.semitones,
+      sampleRate: audioCtx.sampleRate, data,
+      name: 'テイク ' + (existing + created.length + 1) + (partial ? '（途中まで）' : ''),
+      star: false, nudgeMs: 0, createdAt: Date.now() + i
+    });
+  });
+  try{
+    for(const t of created) await takeDB.put(t);
+  }catch(e){
+    deckMsg.textContent = 'テイクの保存に失敗しました: ' + e.message;
+  }
+  recStatus.textContent = created.length ? `${created.length}テイク保存しました` : 'テイクなし（ループ1周分以上録音してください）';
+  if(r.sourceKey === curApi().sourceKey()){
+    await refreshTakes();
+    if(created.length){
+      const newest = takes.find(t => t.id === created[created.length - 1].id);
+      if(newest) assignSlot('t1', newest, true);
+    }
+  }
+}
+
+recBtn.addEventListener('click', ()=>{ rec.active ? stopRecording() : startRecording(); });
+
+/* ---------- 比較ミキサー ---------- */
+const cmp = { on: false, mode: 'sim', cycle: -1, slots: { t1: null, t2: null } };
+const chan = {
+  src: { vol: 1, mute: false, solo: false },
+  t1:  { vol: 1, mute: false, solo: false },
+  t2:  { vol: 1, mute: false, solo: false }
+};
+let mix = null;
+let voices = [];
+
+function ensureMixer(){
+  if(mix) return mix;
+  const ctx = ensureAudioCtx();
+  const mk = ()=>{ const g = ctx.createGain(); const p = ctx.createStereoPanner(); g.connect(p); p.connect(ctx.destination); return { gain: g, pan: p }; };
+  const srcPan = ctx.createStereoPanner();
+  srcPan.connect(ctx.destination);
+  mix = { srcPan, t1: mk(), t2: mk() };
+  return mix;
+}
+
+function effGain(k){
+  const c = chan[k];
+  if(c.mute) return 0;
+  const anySolo = Object.keys(chan).some(x => chan[x].solo);
+  if(anySolo && !c.solo) return 0;
+  return c.vol;
+}
+
+let ytVolTimer = null;
+function ytSetVolume(g, delaySec){
+  clearTimeout(ytVolTimer);
+  const fn = ()=>{
+    if(!player || !player.setVolume) return;
+    if(g <= 0) player.mute();
+    else { player.unMute(); player.setVolume(Math.round(g * 100)); }
+  };
+  if(delaySec > 0.005) ytVolTimer = setTimeout(fn, delaySec * 1000); else fn();
+}
+
+// 先の時刻に予約済みの値(交互モードの切替など)が後から上書きしないよう、予約を消してから設定する
+function setParamAt(param, v, t){
+  param.cancelScheduledValues(t);
+  param.setValueAtTime(v, t);
+}
+
+function applyGains(at){
+  const now = audioCtx ? audioCtx.currentTime : 0;
+  const t = Math.max(at || 0, now);
+  const active = ['src'].concat(['t1', 't2'].filter(k => cmp.slots[k]));
+  const altOn = cmp.on && cmp.mode === 'alt' && active.length > 1;
+  const altCh = altOn ? active[((cmp.cycle % active.length) + active.length) % active.length] : null;
+  const split = cmp.on && cmp.mode === 'split';
+  for(const k of ['src', 't1', 't2']){
+    let g = effGain(k);
+    if(altOn && k !== altCh) g = 0;
+    const pan = split ? (k === 'src' ? -1 : 1) : 0;
+    if(k === 'src'){
+      if(currentMode === 'audio'){
+        if(gainNode) setParamAt(gainNode.gain, g, t);
+        if(mix) setParamAt(mix.srcPan.pan, pan, t);
+      } else {
+        ytSetVolume(g, t - now);
+      }
+    } else if(mix){
+      setParamAt(mix[k].gain.gain, g, t);
+      setParamAt(mix[k].pan.pan, pan, t);
+    }
+  }
+}
+
+function stopTakeVoices(at){
+  const now = audioCtx ? audioCtx.currentTime : 0;
+  voices.forEach(v => { try{ v.stop(Math.max(at || 0, now)); }catch(e){} });
+  voices = [];
+}
+
+/* ループ先頭が鳴る時刻 ref が確定するたびに呼ばれる */
+function onLoopRef(ref){
+  if(rec.active && rec.api === curApi()){
+    rec.refs.push(ref);
+    updateRecStatus();
+  }
+  if(cmp.on){
+    cmp.cycle++;
+    stopTakeVoices(ref);
+    const m = ensureMixer();
+    const now = audioCtx.currentTime;
+    for(const k of ['t1', 't2']){
+      const t = cmp.slots[k];
+      if(!t) continue;
+      const buf = takeAudioBuffer(t);
+      const src = audioCtx.createBufferSource();
+      src.buffer = buf;
+      src.connect(m[k].gain);
+      const start = ref + (t.nudgeMs || 0) / 1000;
+      if(start >= now) src.start(start);
+      else if(now - start < buf.duration) src.start(now, now - start);
+      else continue;
+      voices.push(src);
+    }
+    applyGains(ref);
+  }
+}
+
+function onManualSeek(){
+  stopTakeVoices();
+  if(rec.active) rec.refs.push(null);   // シークをまたいだ区間はテイクにしない
+  ytRef = null;
+  afRefPending = false;
+}
+
+function onTransportStopped(){
+  stopTakeVoices();
+  if(rec.active && performance.now() > rec.graceUntil) stopRecording();
+}
+
+function assignSlot(k, t, force){
+  const other = k === 't1' ? 't2' : 't1';
+  if(!force && cmp.slots[k] && cmp.slots[k].id === t.id) cmp.slots[k] = null;
+  else {
+    cmp.slots[k] = t;
+    if(cmp.slots[other] && cmp.slots[other].id === t.id) cmp.slots[other] = null;
+  }
+  renderTakes();
+  if(cmp.on && !cmp.slots.t1 && !cmp.slots.t2) stopCompare();
+  else applyGains();
+}
+
+function renderSlots(){
+  for(const k of ['t1', 't2']){
+    const el = $('#' + k + 'Name');
+    const t = cmp.slots[k];
+    el.textContent = (k === 't1' ? 'テイク1: ' : 'テイク2: ') + (t ? t.name : 'なし');
+    el.classList.toggle('empty', !t);
+    el.title = t ? t.name : '';
+  }
+  const warn = [];
+  const a = cmp.slots.t1, b = cmp.slots.t2;
+  if(a && b && (a.speed !== b.speed || a.loopStart !== b.loopStart || a.loopEnd !== b.loopEnd)){
+    warn.push('テイク1と2のループ範囲/速度が異なります（テイク1に合わせます）');
+  }
+  if(cmp.mode === 'split' && currentMode === 'youtube') warn.push('YouTubeモードでは原曲を左に振れません（テイクのみ右）');
+  $('#cmpHint').textContent = warn.length ? warn.join(' / ') : 'テイク一覧の「1」「2」で割り当て';
+}
+
+async function startCompare(){
+  const api = curApi();
+  deckMsg.textContent = '';
+  const ref = cmp.slots.t1 || cmp.slots.t2;
+  if(!ref){ deckMsg.textContent = 'テイク一覧の「1」または「2」で比較するテイクを選んでください'; return; }
+  if(!api.hasSource()){ deckMsg.textContent = '先に動画または音声ファイルを読み込んでください'; return; }
+  if(rec.active) await stopRecording();
+  await ensureAudioCtx().resume();
+  ensureMixer();
+  api.pause();
+  api.applyTake(ref);
+  cmp.on = true;
+  cmp.cycle = -1;
+  cmpBtn.textContent = '■ 比較停止';
+  cmpBtn.classList.add('on');
+  applyGains();
+  api.playFromLoopStart();
+}
+
+function stopCompare(){
+  if(!cmp.on) return;
+  cmp.on = false;
+  cmpBtn.textContent = '▶ 比較再生';
+  cmpBtn.classList.remove('on');
+  stopTakeVoices();
+  curApi().pause();
+  applyGains();
+}
+
+cmpBtn.addEventListener('click', ()=>{ cmp.on ? stopCompare() : startCompare(); });
+
+document.querySelectorAll('.cmpmode').forEach(b => b.addEventListener('click', ()=>{
+  cmp.mode = b.dataset.cmp;
+  document.querySelectorAll('.cmpmode').forEach(x => x.classList.toggle('active', x === b));
+  renderSlots();
+  applyGains();
+}));
+
+document.querySelectorAll('.ch').forEach(row => {
+  const k = row.dataset.ch;
+  row.querySelector('input[type=range]').addEventListener('input', e=>{ chan[k].vol = parseFloat(e.target.value); applyGains(); });
+  row.querySelectorAll('.msbtn').forEach(b => b.addEventListener('click', ()=>{
+    const prop = b.dataset.act === 'm' ? 'mute' : 'solo';
+    chan[k][prop] = !chan[k][prop];
+    b.classList.toggle('on', chan[k][prop]);
+    applyGains();
+  }));
+});
+
+/* ソース（動画/ファイル/モード）が変わったらテイク一覧と割り当てを切り替える */
+function onSourceChanged(){
+  if(rec.active && rec.sourceKey !== curApi().sourceKey()) stopRecording();
+  stopCompare();
+  cmp.slots.t1 = null; cmp.slots.t2 = null;
+  applyGains();
+  refreshTakes();
+}
 </script>
 </body>
 </html>
